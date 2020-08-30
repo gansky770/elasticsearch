@@ -1,0 +1,97 @@
+//  Search with bool where it must have a term "title" = trek
+//  and use filter - to filter the range of years greater then 2010
+curl -X GET "localhost:9200/kibana_sample_data_flights/_search?pretty" -d'
+{
+  "query": {
+    "bool": {
+      "must": {
+        "term": {
+          "OriginAirportID" :"BLV"
+        }
+      },
+      "filter": {
+        "range": {
+          "timestamp": {
+            "gte": "2020"
+          }
+        }
+      }
+      
+    }
+  }
+}
+
+
+
+
+
+curl -X GET "localhost:9200/kibana_sample_data_flights/_search?pretty" -d'
+{
+	"query": {
+		"match": {
+			"Carrier" : "ES-Air"
+		}
+	}
+}
+
+
+
+// match_phrase query &  with boolen and filter 
+
+curl -X GET "localhost:9200/kibana_sample_data_flights/_search?pretty" -d'
+{
+  "query": {
+    "bool": {
+      "must": {
+        "match_phrase": {
+          "Origin":"Chhatrapati Shivaji International Airport" 
+        }
+      },
+      "filter": {
+        "range": {
+          "timestamp": {
+            "gte": "2019"
+          }
+        }
+      }
+    }
+  }
+}
+'
+
+
+// Match_pharse query - to match the exact pharse
+
+curl -X GET "localhost:9200/kibana_sample_data_flights/_search?pretty" -d'
+{
+	"query": {
+		"match": {
+			"Origin":"Chhatrapati Shivaji International Airport" 
+		}
+	}
+}
+'
+
+
+
+
+// Search with a slop (slop) slop represents how far we are willing to let a term movies
+// To satisfy a pharse
+// for example: 
+// searching for star beyond with a sloop of 1 can provide us with a results
+// "start trek beyond"
+// "star wars beyond" if existed 
+// "start * beyond", "start beyond *"
+
+
+curl -X GET "localhost:9200/kibana_sample_data_flights/_search?pretty" -d'
+{
+  "query": {
+     "match_phrase": {
+      "Origin": { "query": "Pittsburgh", "slop": "100" }
+    }
+  }
+}
+
+
+

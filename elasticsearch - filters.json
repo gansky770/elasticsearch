@@ -1,0 +1,29 @@
+elasticsearch - filters
+
+curl -X GET "localhost:9200/kibana_sample_data_flights/_search?pretty" -d
+{
+  "query": {
+    "bool": {
+      "must": { "match": {"DestRegion": "US-KS"}},
+      "must_not": { "match":{"Cancelled":"false"}},
+      "filter": {"range": {"timestamp": {"gte": "2019","lt": "2021"}}}
+      }
+    }
+  }
+
+GET /kibana_sample_data_flights/_search?pretty
+{
+  "query": {
+    "bool": {
+      "must": { "match": {"DestRegion": "RU-MUR"}},
+      "filter": {"range": {"timestamp": {"lt": "2021"}}}
+      }
+    }
+    , "sort": [
+      {
+        "OriginCityName": {
+          "order": "asc"
+        }
+      }
+    ]
+  }

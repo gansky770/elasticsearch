@@ -1,0 +1,32 @@
+// elasticsearch - fuzzy query.json
+
+// Searching for a key that contain a misspelling 
+// will produce zero results but with fuzzy query enabled
+// we can allow 1 - x number of misspeliing 
+
+curl -X GET "localhost:9200/kibana_sample_data_flights/_search?pretty" -d
+
+{
+	"query": {
+		"bool": {
+		  "must": { "match": {"DestCityName": "Genova"}}
+		}
+	  }
+	 } 
+}
+
+ 
+ // >> output - 0
+
+curl -X GET "localhost:9200/kibana_sample_data_flights/_search?pretty" -d
+
+{
+	"query" : {
+		"fuzzy" : {
+			"DestCityName": {"value": "Bergramo", "fuzziness": 2}
+	}
+}
+}
+
+
+// >> output - fixed
